@@ -63,8 +63,8 @@ def load_urls(filepath: str) -> list[str]:
 def main():
     args = parse_args()
 
-    if not os.getenv("ANTHROPIC_API_KEY"):
-        print("❌ ANTHROPIC_API_KEY not set. Copy config/.env.example to config/.env")
+    if not os.getenv("AI_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
+        print("❌ AI_API_KEY not set. Copy config/.env.example to config/.env")
         sys.exit(1)
 
     urls = load_urls(args.urls_file)

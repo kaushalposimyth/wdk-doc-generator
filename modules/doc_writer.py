@@ -1,5 +1,5 @@
 """
-Sends page structure + screenshot to Claude and generates
+Sends page structure + screenshot to the AI model and generates
 LLM-friendly, user-friendly documentation in WDesignKit style.
 """
 
@@ -36,24 +36,25 @@ def write_doc(
     product_context: str = "",
     model: str = "claude-sonnet-4-6",
 ) -> str:
-    """Generate professional documentation using Claude API.
-    
-    Sends page structure and optional screenshot to Claude for processing
-    and returns generated documentation in markdown format.
+    """Generate professional documentation from page structure.
 
     Args:
         page_structure_text: Formatted structure from page_scraper.format_structure_for_prompt()
         screenshot_base64: Optional base64-encoded PNG screenshot for visual context
-        product_context: Optional product context to help Claude write relevant docs
-        model: Claude model ID (default: claude-sonnet-4-6)
+        product_context: Optional product context to help write relevant docs
+        model: AI model ID
 
     Returns:
         Generated documentation as a markdown string
-        
+
     Raises:
-        anthropic.APIError: If the API call fails
+        Exception: If the API call fails
     """
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    api_key = os.environ.get("AI_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        raise ValueError("AI_API_KEY not set. Add it to config/.env")
+
+    client = anthropic.Anthropic(api_key=api_key)
 
     user_content = []
 

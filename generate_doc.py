@@ -82,8 +82,8 @@ def parse_args():
 def main():
     args = parse_args()
 
-    if not os.getenv("ANTHROPIC_API_KEY"):
-        print("❌ Error: ANTHROPIC_API_KEY not set.")
+    if not os.getenv("AI_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
+        print("❌ Error: AI_API_KEY not set.")
         print("   Copy config/.env.example to config/.env and add your API key.")
         sys.exit(1)
 
