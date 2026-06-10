@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Core Features**:
   - Full-page screenshot capture (1440px wide using Playwright)
   - Structured content extraction (headings, paragraphs, lists, code blocks, tables)
-  - Claude AI integration for intelligent documentation writing
+  - AI integration for intelligent documentation writing
   - Batch processing support for multiple URLs
   - Markdown output with metadata headers
 
@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Core Modules**:
   - `modules/page_scraper.py`: URL scraping, screenshot, and content extraction
-  - `modules/doc_writer.py`: Claude API integration for doc generation
+  - `modules/doc_writer.py`: AI API integration for doc generation
   - `modules/output_formatter.py`: File saving and summary printing
 
 - **Configuration**:
@@ -59,14 +59,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Environment configuration template
 
 ### Configuration Options
-- `ANTHROPIC_API_KEY`: Claude API authentication
-- `CLAUDE_MODEL`: Model selection (default: claude-sonnet-4-6)
+- `AI_API_KEY`: AI API authentication
+- `AI_MODEL`: Model selection
 - `VIEWPORT_WIDTH`: Screenshot width (default: 1440px)
 - `VIEWPORT_HEIGHT`: Screenshot height (default: 900px)
 - `OUTPUT_DIR`: Documentation output directory (default: output/)
 
 ### Dependencies
-- `anthropic`: Claude API client
+- `requests`: AI API requests
 - `playwright`: Browser automation for screenshots
 - `beautifulsoup4`: HTML parsing
 - `python-dotenv`: Environment configuration
@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### v1.0.0 Release Highlights
 ✅ **Full Feature Set**: Complete solution for generating documentation from any URL  
-✅ **AI-Powered**: Leverages Claude for intelligent, LLM-friendly documentation  
+✅ **AI-Powered**: Uses AI for intelligent, LLM-friendly documentation  
 ✅ **Production Ready**: Batch processing and extensive configuration options  
 ✅ **Read-Only Safe**: Tool never modifies live sites, only reads and generates docs  
 

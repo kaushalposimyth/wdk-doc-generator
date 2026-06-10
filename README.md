@@ -32,10 +32,6 @@ Edit `config/.env` and add your AI API key:
 AI_API_KEY=your-key-here
 ```
 
-Get your key at: https://console.anthropic.com
-
----
-
 ## Usage
 
 ### Single URL

@@ -171,7 +171,7 @@ def format_structure_for_prompt(structure: dict) -> str:
     """Convert extracted page structure into a text prompt-friendly format.
     
     Takes the structured dict from extract_page_structure() and formats it
-    as a human-readable text that can be sent to the Claude API.
+    as human-readable text that can be sent to an AI API.
     
     Args:
         structure: Dict with keys: url, title, description, headings, content_blocks

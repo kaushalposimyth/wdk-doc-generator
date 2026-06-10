@@ -3,7 +3,7 @@
 WDK Doc Generator
 -----------------
 Takes any URL → screenshots it + extracts headings/content →
-writes LLM-friendly, user-friendly documentation using Claude.
+writes LLM-friendly, user-friendly documentation using AI.
 
 Usage:
     python generate_doc.py <URL> [options]
@@ -57,12 +57,12 @@ def parse_args():
     parser.add_argument(
         "--context",
         default="",
-        help="Optional product context to help Claude write better docs",
+        help="Optional product context to help the AI write better docs",
     )
     parser.add_argument(
         "--model",
-        default=os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6"),
-        help="Claude model ID (default: claude-sonnet-4-6)",
+        default=os.getenv("AI_MODEL", "gpt-4o-mini"),
+        help="AI model ID (default: gpt-4o-mini)",
     )
     parser.add_argument(
         "--viewport-width",
@@ -82,7 +82,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    if not os.getenv("AI_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
+    if not os.getenv("AI_API_KEY"):
         print("❌ Error: AI_API_KEY not set.")
         print("   Copy config/.env.example to config/.env and add your API key.")
         sys.exit(1)
@@ -128,7 +128,7 @@ def main():
         print("📸 Step 2/3 — Screenshot skipped (--no-screenshot)")
 
     # Step 3: Generate documentation
-    print(f"✍️  Step 3/3 — Writing documentation with Claude ({args.model})...")
+    print(f"✍️  Step 3/3 — Writing documentation with AI ({args.model})...")
     try:
         doc_markdown = write_doc(
             page_structure_text=structure_text,

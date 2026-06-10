@@ -4,7 +4,7 @@ LLM-friendly, user-friendly documentation in WDesignKit style.
 """
 
 import os
-import anthropic
+import requests
 
 
 SYSTEM_PROMPT = """You are a professional technical documentation writer specializing in LLM-friendly, user-friendly documentation.
@@ -34,7 +34,7 @@ def write_doc(
     page_structure_text: str,
     screenshot_base64: str | None = None,
     product_context: str = "",
-    model: str = "claude-sonnet-4-6",
+    model: str = "gpt-4o-mini",
 ) -> str:
     """Generate professional documentation from page structure.
 
@@ -50,22 +50,18 @@ def write_doc(
     Raises:
         Exception: If the API call fails
     """
-    api_key = os.environ.get("AI_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("AI_API_KEY")
     if not api_key:
         raise ValueError("AI_API_KEY not set. Add it to config/.env")
 
-    client = anthropic.Anthropic(api_key=api_key)
+    api_url = os.environ.get("AI_API_BASE_URL", "https://api.openai.com/v1/chat/completions")
 
     user_content = []
 
     if screenshot_base64:
         user_content.append({
-            "type": "image",
-            "source": {
-                "type": "base64",
-                "media_type": "image/png",
-                "data": screenshot_base64,
-            },
+            "type": "image_url",
+            "image_url": {"url": f"data:image/png;base64,{screenshot_base64}"},
         })
 
     context_note = f"\n\nPRODUCT CONTEXT: {product_context}" if product_context else ""
@@ -81,11 +77,23 @@ def write_doc(
         ),
     })
 
-    response = client.messages.create(
-        model=model,
-        max_tokens=4096,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_content}],
+    response = requests.post(
+        api_url,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": model,
+            "max_tokens": 4096,
+            "messages": [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_content},
+            ],
+        },
+        timeout=120,
     )
+    response.raise_for_status()
+    data = response.json()
 
-    return response.content[0].text
+    return data["choices"][0]["message"]["content"]

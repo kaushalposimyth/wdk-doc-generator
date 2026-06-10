@@ -36,8 +36,8 @@ def parse_args():
     parser.add_argument("urls_file", help="Text file with one URL per line")
     parser.add_argument("--output-dir", default="output", help="Output directory (default: output/)")
     parser.add_argument("--no-screenshot", action="store_true", help="Skip screenshots")
-    parser.add_argument("--context", default="", help="Product context for Claude")
-    parser.add_argument("--model", default=os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6"))
+    parser.add_argument("--context", default="", help="Product context for the AI")
+    parser.add_argument("--model", default=os.getenv("AI_MODEL", "gpt-4o-mini"))
     parser.add_argument("--delay", type=float, default=2.0, help="Seconds between requests (default: 2)")
     return parser.parse_args()
 
@@ -63,7 +63,7 @@ def load_urls(filepath: str) -> list[str]:
 def main():
     args = parse_args()
 
-    if not os.getenv("AI_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
+    if not os.getenv("AI_API_KEY"):
         print("❌ AI_API_KEY not set. Copy config/.env.example to config/.env")
         sys.exit(1)
 
