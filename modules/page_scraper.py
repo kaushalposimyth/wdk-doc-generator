@@ -13,6 +13,16 @@ from playwright.sync_api import sync_playwright
 
 
 def _slug_from_url(url: str) -> str:
+    """Convert URL to a URL-safe slug for filenames.
+    
+    Extracts path from URL and sanitizes it for safe use in filenames.
+    
+    Args:
+        url: The URL to convert
+        
+    Returns:
+        URL-safe slug string (max 60 characters)
+    """
     parsed = urlparse(url)
     path = parsed.path.strip("/").replace("/", "-") or parsed.netloc.replace(".", "-")
     return re.sub(r"[^a-z0-9-]", "", path.lower())[:60]
@@ -36,17 +46,34 @@ def screenshot_page(url: str, output_dir: Path, viewport_width: int = 1440, view
 
 
 def image_to_base64(img_path: Path) -> str:
+    """Convert an image file to base64-encoded string.
+    
+    Args:
+        img_path: Path to the image file
+        
+    Returns:
+        Base64-encoded string representation of the image
+    """
     with open(img_path, "rb") as f:
         return base64.standard_b64encode(f.read()).decode("utf-8")
 
 
 def extract_page_structure(url: str) -> dict:
-    """
-    Fetches the URL and extracts structured content:
-    - title, meta description
-    - headings hierarchy (H1-H6)
-    - paragraphs, lists, code blocks, tables
-    - returns a clean dict ready for the doc writer
+    """Fetch and extract structured content from a URL.
+    
+    Downloads a URL, removes navigation/clutter, and extracts:
+    - Page title and meta description
+    - Heading hierarchy (H1-H6)
+    - Paragraphs, lists, code blocks, tables, notes/blockquotes
+    
+    Args:
+        url: The URL to extract content from
+        
+    Returns:
+        Dict with keys: url, title, description, headings, content_blocks
+        
+    Raises:
+        requests.RequestException: If URL fetch fails
     """
     import requests
 
@@ -141,7 +168,17 @@ def extract_page_structure(url: str) -> dict:
 
 
 def format_structure_for_prompt(structure: dict) -> str:
-    """Converts extracted structure into a clean text prompt-friendly format."""
+    """Convert extracted page structure into a text prompt-friendly format.
+    
+    Takes the structured dict from extract_page_structure() and formats it
+    as a human-readable text that can be sent to the Claude API.
+    
+    Args:
+        structure: Dict with keys: url, title, description, headings, content_blocks
+        
+    Returns:
+        Formatted text string ready for LLM processing
+    """
     lines = []
     lines.append(f"PAGE URL: {structure['url']}")
     lines.append(f"PAGE TITLE: {structure['title']}")

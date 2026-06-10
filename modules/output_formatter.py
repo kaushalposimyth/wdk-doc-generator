@@ -9,13 +9,30 @@ from urllib.parse import urlparse
 
 
 def _slug_from_url(url: str) -> str:
+    """Convert URL to a URL-safe slug for use in filenames.
+    
+    Args:
+        url: The URL to convert
+        
+    Returns:
+        URL-safe slug string (max 60 characters)
+    """
     parsed = urlparse(url)
     path = parsed.path.strip("/").replace("/", "-") or parsed.netloc.replace(".", "-")
     return re.sub(r"[^a-z0-9-]", "", path.lower())[:60]
 
 
 def save_doc(markdown_content: str, url: str, output_dir: Path) -> Path:
-    """Saves the generated doc as a .md file. Returns the output path."""
+    """Save generated documentation as a timestamped markdown file.
+    
+    Args:
+        markdown_content: The markdown content to save
+        url: Source URL (used in metadata and filename)
+        output_dir: Directory where the file will be saved
+        
+    Returns:
+        Path object pointing to the saved file
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
     slug = _slug_from_url(url)
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -37,7 +54,13 @@ def save_doc(markdown_content: str, url: str, output_dir: Path) -> Path:
 
 
 def print_summary(url: str, output_path: Path, screenshot_path: Path | None = None) -> None:
-    """Prints a clean summary of what was generated."""
+    """Print a formatted summary of generated documentation.
+    
+    Args:
+        url: Source URL that was processed
+        output_path: Path to the saved documentation file
+        screenshot_path: Optional path to the saved screenshot
+    """
     print("\n" + "=" * 60)
     print("  ✅ DOCUMENTATION GENERATED")
     print("=" * 60)

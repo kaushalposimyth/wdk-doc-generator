@@ -43,6 +43,14 @@ def parse_args():
 
 
 def load_urls(filepath: str) -> list[str]:
+    """Load URLs from a text file, skipping comments and empty lines.
+    
+    Args:
+        filepath: Path to text file with one URL per line
+        
+    Returns:
+        List of valid URLs
+    """
     urls = []
     with open(filepath, "r", encoding="utf-8") as f:
         for line in f:

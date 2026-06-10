@@ -36,17 +36,22 @@ def write_doc(
     product_context: str = "",
     model: str = "claude-sonnet-4-6",
 ) -> str:
-    """
-    Calls Claude to generate documentation.
+    """Generate professional documentation using Claude API.
+    
+    Sends page structure and optional screenshot to Claude for processing
+    and returns generated documentation in markdown format.
 
     Args:
         page_structure_text: Formatted structure from page_scraper.format_structure_for_prompt()
-        screenshot_base64: Optional base64 PNG screenshot
-        product_context: Optional extra context about the product
-        model: Claude model ID
+        screenshot_base64: Optional base64-encoded PNG screenshot for visual context
+        product_context: Optional product context to help Claude write relevant docs
+        model: Claude model ID (default: claude-sonnet-4-6)
 
     Returns:
-        Generated documentation as markdown string
+        Generated documentation as a markdown string
+        
+    Raises:
+        anthropic.APIError: If the API call fails
     """
     client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
