@@ -1,0 +1,6 @@
+# WDesignKit Docs - Example URL list for batch_generate.py
+# Add one URL per line. Lines starting with # are ignored.
+
+https://learn.wdesignkit.com/docs/wdesignkit-mcp-abilities/
+# https://learn.wdesignkit.com/docs/getting-started/
+# https://learn.wdesignkit.com/docs/widget-builder/
